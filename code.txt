@@ -1,0 +1,61 @@
+#define S0 34
+#define S1 25
+#define S2 14
+#define S3 27
+#define sensorOut 26
+LiquidCrystal lcd(19, 23, 16, 17, 5, 18);
+int redColor = 0;
+int greenColor = 0;
+int blueColor = 0;
+void setup() {
+  pinMode(S0, OUTPUT);
+  pinMode(S1, OUTPUT);
+  pinMode(S2, OUTPUT);
+  pinMode(S3, OUTPUT);
+  pinMode(sensorOut, INPUT);
+  digitalWrite(S0,HIGH);
+  digitalWrite(S1,LOW);
+  Serial.begin(9600);
+  lcd.begin(16, 2);
+  lcd.print("Culoarea este: ");
+}
+void loop() {
+  lcd.setCursor(0, 1);
+  digitalWrite(S2,LOW);
+  digitalWrite(S3,LOW);
+  redColor = pulseIn(sensorOut, LOW);
+  redColor = map(redColor, 25,72,255,0);
+  Serial.print("R= ");
+  Serial.print(redColor);
+  Serial.print("  ");
+  delay(100);
+  digitalWrite(S2,HIGH);
+  digitalWrite(S3,HIGH);
+  greenColor = pulseIn(sensorOut, LOW);
+  greenColor = map(greenColor, 30,90,255,0);
+  Serial.print("G= ");
+  Serial.print(greenColor)
+  Serial.print("  ");
+  delay(100);
+
+  digitalWrite(S2,LOW);
+  digitalWrite(S3,HIGH);
+  blueColor = pulseIn(sensorOut, LOW);
+  blueColor = map(blueColor, 25,70,255,0);
+  Serial.print("B= ");
+  Serial.print(blueColor);
+  if(redColor > greenColor && redColor > blueColor)
+{
+      lcd.print("Rosu!");
+  }
+  if(greenColor > redColor && greenColor > blueColor)
+{
+    lcd.print("Verde!");
+  }
+  if(blueColor > redColor && blueColor > greenColor)
+{
+    lcd.print("Albastru!");
+  }
+  lcd.println("  ");
+  delay(100);
+} 
